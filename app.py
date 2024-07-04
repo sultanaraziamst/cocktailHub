@@ -1,22 +1,23 @@
 import sqlite3
 import pandas as pd
 from flask import Flask, render_template, request
+import json
 
 # Connect to SQLite database
-conn = sqlite3.connect('recipe.sql')
+conn = sqlite3.connect('recipes.db')
 
 
 app = Flask(__name__)
 
 def get_cocktail_recipe(cocktail_name):
     """Function to retrieve ingredients for a given cocktail name."""
-    conn = sqlite3.connect("recipe.db")
+    conn = sqlite3.connect("recipes.db")
     cursor = conn.cursor()
 
     # Perform a case insensitive search for the cocktail name
     cursor.execute('''
         SELECT ingredient
-        FROM recipe
+        FROM recipes
         WHERE ingredients = (SELECT Garnish FROM recipe WHERE LOWER(name) = LOWER(?))
     ''', (cocktail_name,))
     
@@ -32,7 +33,7 @@ def index():
         print(request.data)
         print(request.form)
         cocktail_name = request.form['cocktail_name'].strip()
-        recipe = get_cocktail_recipe(cocktail_name)
+        recipes = get_cocktail_recipe(cocktail_name)
         return render_template('index.html', cocktail_name=cocktail_name, ingredient=recipe)
     return render_template('index.html')
 
