@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Shakerology</title>
+    </head>
+    <body>
+        <h1>Welcome to Shakerology!!!</h1>
+        <form method="post" action="/">
+            <label for="cocktail_name">Enter the name of cocktail:</label>
+            <input type="text" id="cocktail_name" name="cocktail_name">
+            <button type="submit">Get Recipe</button>
+        </form>
+        
+        {% if cocktail_name %}
+            {% if ingredients %}
+                <h2>Recipe for {{ cocktail_name }}:</h2>
+                <ul>
+                    {% for ingredient in ingredients %}
+                        <li>{{ ingredient }}</li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>Sorry, recipe for '{{ cocktail_name }}' not found. Please try again.</p>
+            {% endif %}
+        {% endif %}
+    </body>
+</html>
